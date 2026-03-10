@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "strict": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "types": ["node"],
+    // 关闭冲突选项
+    "verbatimModuleSyntax": false,
+    "noUncheckedSideEffectImports": false,
+    "erasableSyntaxOnly": false
+  },
+  "include": ["vite.config.ts"]
+}
