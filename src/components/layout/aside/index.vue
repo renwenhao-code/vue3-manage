@@ -3,7 +3,6 @@
     <div class="aside-title" :style="{ width: isCollapse ? '64px' : '200px' }">
       后台管理系统
     </div>
-    <!-- router="true" -->
     <el-menu
       active-text-color="#ffd04b"
       background-color="#545c64"
@@ -15,10 +14,10 @@
     >
       <template v-for="item in menus" :key="item.path">
         <el-menu-item v-if="!item.children" :index="`/${item.path}`">
-            <el-icon>
-              <component :is="item.meta?.icon || 'Location'" />
-            </el-icon>
-            <span>{{ item.meta?.title }}</span>
+          <el-icon>
+            <component :is="item.meta?.icon || 'Location'" />
+          </el-icon>
+          <span>{{ item.meta?.title }}</span>
         </el-menu-item>
         <el-sub-menu v-else :key="item.path" :index="`/${item.path}`">
           <template #title>
@@ -46,23 +45,20 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps, onMounted, reactive } from "vue";
+import { onMounted, reactive } from "vue";
 import { useRouter, useRoute } from "vue-router";
 
 // 定义props
 const props = defineProps({
   isCollapse: {
     type: Boolean,
-    // required: true,
     default: false,
   },
 });
 const router = useRouter();
 const route = useRoute();
 const menus = reactive(router.options.routes)[0].children;
-onMounted(() => {
-  console.log(menus);
-});
+onMounted(() => {});
 </script>
 
 <style lang="less" scoped>

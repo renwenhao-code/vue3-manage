@@ -487,14 +487,14 @@ button {
 
 
 
-.e-nav__link:hover:before {
+/* .e-nav__link:hover:before {
   top: -60px;
   right: -50px;
-}
-
+} */
+/* 
 .e-nav__link:hover {
-  color: #fff;
-}
+  color: black;
+} */
 
 .e-nav__link:nth-child(2):hover:after {
   color: #fff;
