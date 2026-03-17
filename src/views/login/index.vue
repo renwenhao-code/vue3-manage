@@ -41,26 +41,29 @@
 </template>
 
 <script setup lang="ts">
-import { useUserStore } from "@/store/modules/user";
-import { reactive, Ref, ref } from "vue";
+import { reactive } from "vue";
 import { useRouter } from "vue-router";
-import { ElMessage } from "element-plus";
+import { useUserStore } from "@/stores/user";
+
+import type { UserInfo, LoginResponse } from "@/type";
 const loginInfo = reactive({
-  name: "admin",
-  password: "123456",
+  name: "editor",
+  password: "1234567",
 });
 
 const router = useRouter();
 
 async function submit() {
   try {
-    const res = await useUserStore().login(loginInfo);
-    if (res.code == 200) {
-      router.push({ path: "/home" });
-    } else {
-      ElMessage.error(res.message);
+    const userStore = useUserStore();
+    let res = await userStore.login(loginInfo);
+    if (res && res.code === 200) {
+      router.push("/");
     }
-  } catch (error) {}
+    // router.push("/");
+  } catch (error) {
+    console.error("登录失败:", error);
+  }
 }
 </script>
 

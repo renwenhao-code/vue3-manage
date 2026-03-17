@@ -1,11 +1,11 @@
 import { createApp } from 'vue'
+import App from './App.vue'
+import ('../mock')
 import './style.css'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import Router from './router'
 import { createPinia } from 'pinia'
-import App from './App.vue'
-import ('./mock')
 // 引入图标库
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 

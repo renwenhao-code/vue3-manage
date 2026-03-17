@@ -20,15 +20,15 @@
       <el-col class="col" :span="6"></el-col>
       <el-col class="col" :span="6"></el-col>
       <el-col class="col" :span="6">
-        {{ useUserStore().userInfo.name }}
+        {{ useUserStore().stateUserInfo.value.name }}
       </el-col>
     </el-row>
   </div>
 </template>
  
 <script setup>
-import { ref, defineEmits } from "vue";
-import { useUserStore } from "@/store/modules/user";
+import { ref, defineEmits, onMounted } from "vue";
+import { useUserStore } from "@/stores/user";
 const emit = defineEmits(["custom-isCollapse"]);
 const isCollapse = ref(false);
 //自定义事件向父组件传递collapse状态
@@ -38,6 +38,10 @@ function handleCollapse() {
 }
 function logout() {
   useUserStore().logout();
+}
+
+function getUserInfo() {
+  useUserStore().getUserInfo();
 }
 </script>
  

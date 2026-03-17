@@ -4,13 +4,14 @@ import { createRouter, createWebHistory } from "vue-router";
 
 import { getToken } from "@/utils/auth";
 
-import { useUserStore } from "@/store/modules/user";
+
+import { useUserStore } from "@/stores/user";
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
     name: "layout",
     redirect: "/home",
-    component: () => import("@/components/layout/index.vue"),
+    component: () => import("@/layout/index.vue"),
     children: [
       {
         path: "home",
@@ -88,17 +89,25 @@ const router = createRouter({
 });
 
 //路由前置守卫
-router.beforeEach((to, from) => {
+router.beforeEach(async (to, from) => {
   const hasToken = getToken();
-  const userInfo =useUserStore().userInfo?.name;
+  const name = useUserStore().stateUserInfo.value?.name;
   if (hasToken) {
     if (to.path === "/login") {
       return "/";
     } else {
+      if (!name) {
+        try {
+          await useUserStore().getUserInfo();
+        } catch (error) {
+          useUserStore().logout();
+          console.error("获取用户信息失败", error);
+          return `/login?redirect=${to.path}`;
+        }
+      }
       return;
     }
   } else {
-
     if (to.path === "/login") {
       return;
     } else {
