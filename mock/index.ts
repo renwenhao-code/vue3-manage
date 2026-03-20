@@ -8,7 +8,11 @@ import { tokens, users } from "./user";
 
 import type { UserInfo, LoginResponse } from "@/type";
 
-Mock.onPost("/api/user/login").reply((config) => {
+import brands from "./brands";
+
+console.log("mock品牌数据", brands);
+
+Mock.onPost("/user/login").reply((config) => {
   const { name, password } = JSON.parse(config.data);
   if (tokens.has(name) && users.get(tokens.get(name)).password === password) {
     return [
@@ -33,9 +37,9 @@ Mock.onPost("/api/user/login").reply((config) => {
   }
 });
 
-Mock.onGet("/api/user/info").reply((config) => {
+Mock.onGet("/user/info").reply((config) => {
   const token = config.headers?.Authorization;
-
+  console.log("mock用户信息");
   if (users.has(token)) {
     return [
       200,
@@ -54,4 +58,10 @@ Mock.onGet("/api/user/info").reply((config) => {
       },
     ];
   }
+});
+
+Mock.onGet("/api/brands").reply(200, {
+  code: 200,
+  data: brands,
+  message: "获取品牌数据成功",
 });

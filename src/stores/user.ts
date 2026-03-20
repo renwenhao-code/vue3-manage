@@ -5,6 +5,7 @@ import { userLogin, getInfo } from "@/api/user";
 import type { UserInfo, LoginResponse } from "@/type";
 
 import { getToken, setToken, removeToken } from "@/utils/auth";
+import router from "@/router";
 
 let stateUserInfo = ref<UserInfo | null>(null);
 let token = ref<string | null>(getToken() || null);
@@ -36,6 +37,7 @@ function logout() {
   token.value = null;
   stateUserInfo.value = null;
   removeToken(); // 移除的token
+  router.push("/login"); // 跳转到登录页
 }
 
 export function useUserStore() {

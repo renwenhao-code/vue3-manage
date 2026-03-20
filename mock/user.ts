@@ -5,16 +5,17 @@ tokens.set("editor", "editor-token");
 export const users = new Map();
 users.set("admin-token", {
   roles: ["admin"],
-  introduction: "I am a super administrator",
-  avatar: "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif",
-  name: "Super Admin",
+  introduction: "我是超级管理员",
+  avatar: "../public/dog.gif",
+  
+  name: "超级管理员",
   password: "123456",
 });
 
 users.set("editor-token", {
   roles: ["editor"],
-  introduction: "I am an editor",
-  avatar: "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif",
-  name: "Normal Editor",
+  introduction: "我是普通编辑",
+  avatar: "../public/dog.gif",
+  name: "普通编辑",
   password: "1234567",
 });

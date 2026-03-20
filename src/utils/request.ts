@@ -2,7 +2,7 @@ import axios from "axios";
 
 // 创建axios实例
 const request = axios.create({
-  baseURL: "/", // 基础路径
+  baseURL: "/api", // 基础路径
   timeout: 10000,
 });
 
@@ -28,8 +28,7 @@ request.interceptors.request.use(
 request.interceptors.response.use(
   (response) => {
     // 如果相应成功，将直接返回data，否者直接通过promise.reject抛出错误让调用者通过try catch捕获
-    // if (response.data?.code == 200) {
-    if (response.status == 200) {
+    if (response.data?.code == 200) {
       return response.data;
     } else {
       return Promise.reject(response.data.message || "请求失败");

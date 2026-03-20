@@ -70,7 +70,8 @@ async function submit() {
 <style scoped lang="less">
 .login {
   height: 100vh;
-  background: url("@/assets/images/login.jpg") no-repeat center center;
+  background: url("@/assets/images/login.avif") no-repeat center center;
+    // background-color: #2a5c8a; 
   background-size: cover;
 
   /* 毛玻璃登录框 */

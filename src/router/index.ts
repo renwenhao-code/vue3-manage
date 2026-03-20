@@ -2,8 +2,7 @@ import type { RouteRecordRaw } from "vue-router"; // 重点：加 type
 
 import { createRouter, createWebHistory } from "vue-router";
 
-import { getToken } from "@/utils/auth";
-
+import { getToken, removeToken } from "@/utils/auth";
 
 import { useUserStore } from "@/stores/user";
 const routes: Array<RouteRecordRaw> = [
@@ -98,10 +97,9 @@ router.beforeEach(async (to, from) => {
     } else {
       if (!name) {
         try {
-          await useUserStore().getUserInfo();
+           await useUserStore().getUserInfo();
         } catch (error) {
-          useUserStore().logout();
-          console.error("获取用户信息失败", error);
+          removeToken();
           return `/login?redirect=${to.path}`;
         }
       }

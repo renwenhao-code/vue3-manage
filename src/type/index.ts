@@ -23,3 +23,17 @@ export interface ApiResponse<T> {
   data: T;
   message: string;
 }
+
+// 定义品牌信息接口
+export interface Brand {
+  name: string;
+  dailySales: number;
+  monthlySales: number;
+  annualSales: number;
+}
+
+
+// 定义品牌列表接口
+export interface BrandList {
+  brands: Brand[];
+}

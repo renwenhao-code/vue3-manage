@@ -20,7 +20,22 @@
       <el-col class="col" :span="6"></el-col>
       <el-col class="col" :span="6"></el-col>
       <el-col class="col" :span="6">
-        {{ useUserStore().stateUserInfo.value.name }}
+        <el-dropdown trigger="click" >
+          <span class="el-dropdown-link">
+            <el-avatar
+              :size="44"
+              :src="useUserStore().stateUserInfo.value?.avatar"
+              :title="useUserStore().stateUserInfo.value?.name"
+            >
+              {{ useUserStore().stateUserInfo.value?.name?.charAt(0) }}
+            </el-avatar>
+          </span>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item @click="logout">退出登录</el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
       </el-col>
     </el-row>
   </div>
@@ -54,6 +69,11 @@ function getUserInfo() {
     }
     .col:last-child {
       text-align: right;
+      
+      .el-dropdown{
+        vertical-align: middle;
+        line-height: 1.5;
+      }
     }
   }
 }
