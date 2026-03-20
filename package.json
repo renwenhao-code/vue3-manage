@@ -10,16 +10,21 @@
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.2",
+<<<<<<< HEAD
     "@tailwindcss/vite": "^4.2.1",
     "axios": "^1.13.6",
     "echarts": "^6.0.0",
     "element-plus": "^2.13.3",
     "pinia": "^3.0.4",
     "tailwindcss": "^4.2.1",
+=======
+    "element-plus": "^2.13.3",
+>>>>>>> c228ba488b0d9552c7761dd7e20fa58c7be002eb
     "vue": "^3.5.25",
     "vue-router": "^5.0.3"
   },
   "devDependencies": {
+<<<<<<< HEAD
     "@types/mockjs": "^1.0.10",
     "@types/node": "^24.12.0",
     "@vitejs/plugin-vue": "^6.0.4",
@@ -29,6 +34,13 @@
     "less": "^4.5.1",
     "less-loader": "^12.3.1",
     "mockjs": "^1.1.0",
+=======
+    "@types/node": "^24.10.1",
+    "@vitejs/plugin-vue": "^6.0.4",
+    "@vue/tsconfig": "^0.8.1",
+    "less": "^4.5.1",
+    "less-loader": "^12.3.1",
+>>>>>>> c228ba488b0d9552c7761dd7e20fa58c7be002eb
     "typescript": "^5.9.3",
     "vite": "^7.3.1",
     "vue-tsc": "^3.1.5"

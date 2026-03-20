@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
   <div>
     <!-- 上部分：左中右三列布局 -->
     <el-row :gutter="10">
@@ -248,5 +249,13 @@ const annualTotalSales = computed(() => {
 </style>
  
 
+=======
+  <div>home</div>
+</template>
+ 
+<script setup>
+name: "home";
+</script>
+>>>>>>> c228ba488b0d9552c7761dd7e20fa58c7be002eb
  
 <style></style>

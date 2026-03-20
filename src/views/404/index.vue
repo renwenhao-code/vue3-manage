@@ -487,6 +487,7 @@ button {
 
 
 
+<<<<<<< HEAD
 /* .e-nav__link:hover:before {
   top: -60px;
   right: -50px;
@@ -495,6 +496,16 @@ button {
 .e-nav__link:hover {
   color: black;
 } */
+=======
+.e-nav__link:hover:before {
+  top: -60px;
+  right: -50px;
+}
+
+.e-nav__link:hover {
+  color: #fff;
+}
+>>>>>>> c228ba488b0d9552c7761dd7e20fa58c7be002eb
 
 .e-nav__link:nth-child(2):hover:after {
   color: #fff;

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // {
 //   "files": [],
 //   "references": [
@@ -24,5 +25,15 @@
         "src/*"
       ]
     }
+=======
+{
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ],
+  "compilerOptions": {
+    "skipLibCheck": true // 跳过第三方库的类型检查，提升速度
+>>>>>>> c228ba488b0d9552c7761dd7e20fa58c7be002eb
   }
 }
