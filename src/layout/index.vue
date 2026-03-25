@@ -31,6 +31,7 @@ function customIsCollapse(e) {
 <style scoped lang="less">
 .layout-container {
   height: 100vh;
+  overflow: hidden;
   .aside{
     background-color:#545c64;
   }
@@ -41,9 +42,13 @@ function customIsCollapse(e) {
       border-bottom: 1px solid #e6e6e6;
     }
     .main{
-      
+         overflow: hidden;
       // background-color: pink;
     }
   }
 }
+:deep(.el-main){
+  padding: 0;
+}
+
 </style>

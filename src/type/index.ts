@@ -37,3 +37,23 @@ export interface Brand {
 export interface BrandList {
   brands: Brand[];
 }
+
+
+
+
+
+//定义商品列表接口
+
+export interface Product {
+  id: string;
+  name: string;
+  price: number;
+  originalPrice: number;
+  stock: number;
+  category: string;
+  description: string;
+  image: string;
+  rating: number;
+  sales: number;
+  createTime: string;
+}

@@ -2,7 +2,6 @@
 el-menu 可以启用嵌套式路由
 当遍历路由时:index="`/${item.path}`"必须为绝对路径，否者当跳转三级路由时,再次跳转到二级路由就会警告路由错误
 
-<<<<<<< HEAD
 ##TS声明响应式数据
 
 有两种写法
@@ -53,5 +52,3 @@ return Promise.reject(response.data.message || "请求失败");
 return Promise.reject(error);
 },
 );
-=======
->>>>>>> c228ba488b0d9552c7761dd7e20fa58c7be002eb

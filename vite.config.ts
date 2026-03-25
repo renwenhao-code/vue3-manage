@@ -12,13 +12,8 @@ export default defineConfig({
     },
   },
   server: {
-    // port: 3000, // 设置端口号
-    open: true, // 自动打开浏览器
+    open: false, // 自动打开浏览器
     
-    // proxy: {
-    //   "/api": {
-    //     target: "http://localhost:3000", // 代理目标地址
-    //   },
-    // },
+  
   },
 });

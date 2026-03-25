@@ -10,8 +10,10 @@
 // }
 {
   "compilerOptions": {
+    "module": "ESNext", // 或 "NodeNext"（配合 node16/nodenext）
+    "moduleResolution": "bundler", // 关键修改
+    "esModuleInterop": true, // 允许从 CommonJS 模块默认导入
     "target": "es6", // 指定编译后的 JavaScript 版本
-    "module": "commonjs", // 模块系统，如 commonjs、esnext
     "strict": true, // 开启严格模式
     "noImplicitAny": true, // 禁止隐式 any 类型
     "outDir": "./dist", // 输出目录

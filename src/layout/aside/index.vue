@@ -58,12 +58,14 @@ const props = defineProps({
 const router = useRouter();
 const route = useRoute();
 const menus = reactive(router.options.routes)[0].children;
+// console.log(router.getRoutes())
 onMounted(() => {});
 </script>
 
 <style lang="less" scoped>
 .aside {
   background-color: #545c64;
+  
   .aside-title {
     padding-top: 15px;
     transition: 0.5s width;

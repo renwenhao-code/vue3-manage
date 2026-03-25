@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="home-content">
     <!-- 上部分：左中右三列布局 -->
     <el-row :gutter="10">
       <el-col :span="8">
@@ -82,7 +82,7 @@
           <el-col :span="8">
             <div class="grid-content">
               <el-card>
-                <div class="flex justify-around items-center">
+                <div class="flex justify-around flex-wrap items-center">
                   <div class="w-16 h-16">
                     <img
                       class="rounded-full"
@@ -101,7 +101,7 @@
           <el-col :span="8">
             <div class="grid-content">
               <el-card>
-                <div class="flex justify-around items-center">
+                <div class="flex justify-around flex-wrap items-center">
                   <div class="w-16 h-16">
                     <img
                       class="rounded-full"
@@ -120,7 +120,7 @@
           <el-col :span="8">
             <div class="grid-content">
               <el-card>
-                <div class="flex justify-around items-center">
+                <div class="flex justify-around flex-wrap items-center">
                   <div class="w-16 h-16">
                     <img
                       class="rounded-full"
@@ -227,6 +227,11 @@ const annualTotalSales = computed(() => {
 </script>
 
 <style scoped lang="less">
+.home-content{
+  overflow-y: scroll;
+  height: 100vh;
+  min-width: 1190px;
+}
 .el-row {
   margin-bottom: 20px;
 }
@@ -248,5 +253,3 @@ const annualTotalSales = computed(() => {
 </style>
  
 
- 
-<style></style>

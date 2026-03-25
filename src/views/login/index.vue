@@ -47,8 +47,8 @@ import { useUserStore } from "@/stores/user";
 
 import type { UserInfo, LoginResponse } from "@/type";
 const loginInfo = reactive({
-  name: "editor",
-  password: "1234567",
+  name: "admin",
+  password: "123456",
 });
 
 const router = useRouter();

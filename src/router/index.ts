@@ -70,15 +70,16 @@ const routes: Array<RouteRecordRaw> = [
       },
     ],
   },
-  {
-    path: "/:pathMatch(.*)*",
-    name: "notFound",
-    component: () => import("@/views/404/index.vue"),
-  },
+ 
   {
     path: "/login",
     name: "login",
     component: () => import("@/views/login/index.vue"),
+  },
+   {
+    path: "/:pathMatch(.*)*",
+    name: "notFound",
+    component: () => import("@/views/404/index.vue"),
   },
 ];
 
