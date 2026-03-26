@@ -20,7 +20,7 @@ export interface LoginResponse {
 // 定义一个通用的API响应类型，包含一个泛型参数T表示data的类型
 export interface ApiResponse<T> {
   code: number;
-  data: T;
+  data?: T;
   message: string;
 }
 

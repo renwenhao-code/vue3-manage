@@ -63,8 +63,8 @@
 <script lang="ts" setup>
 import { computed, ref, onMounted, watch } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
-import { getProducts } from "@/api/products";
-
+import { getProducts, deleteProduct } from "@/api/products";
+import {useProductsStore} from "@/stores/products.ts";
 import type { Product } from "@/type/index";
 //表格数据收集
 const tableData = ref<Product[]>([]);
@@ -78,6 +78,8 @@ const currentPage = ref(1);
 const currentTableData = ref<Product[]>([]);
 
 onMounted(async () => {
+  // useProductsStore().getProductsList();
+
   await getProducts().then((res) => {
     tableData.value = res.data;
     currentTableData.value = res.data;
@@ -111,20 +113,55 @@ const handleEdit = (index: number, row: Product) => {
 };
 // 删除按钮
 const count = ref(1);
-const handleDelete = (index: number, row: Product) => {
-  tableData.value.splice(index, 1);
-  currentTableData.value.splice(index, 1);
-  total.value = tableData.value.length;
-  if (count.value < 10) {
-    count.value++;
-  } else {
-    ElMessage({
-      type: "warning",
-      message: "当前页数据已被全部删除,已为你跳转至下一页",
+const handleDelete = async (index: number, row: Product) => {
+  const productIndex = tableData.value.findIndex((item) => item.id === row.id);
+
+  // 确认删除弹框
+  ElMessageBox.confirm("此操作将永久删除此项, 是否继续?", "提示", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning",
+  })
+    .then(async () => {
+      // 确认删除的后续操作
+      // 发送删除请求
+      await deleteProduct(row.id).then((res) => {
+        ElMessage({
+          type: "success",
+          message: "删除成功",
+        });
+        // 将本地的数据同时删除
+        console.log("这是删除的索引", productIndex);
+        tableData.value.splice(productIndex, 1);
+        const currentPageDeleteProductIndex = currentTableData.value.findIndex(
+          (item) => item.id === row.id
+        );
+        currentTableData.value.splice(currentPageDeleteProductIndex, 1);
+        // 重新计算总数据
+        total.value = tableData.value.length;
+        // 记录删除多少条数据，如果大于当前展示页的数据跳转到首页
+        if (count.value < pageSize.value) {
+          count.value++;
+          console.log("这是删除的条数", count.value);
+        } else {
+          ElMessage({
+            type: "warning",
+            message: "当前页数据已被全部删除,已为你跳转至首页",
+          });
+          // 将删除的计数重置
+          count.value = 1;
+          // 跳转到下一页
+          currentPage.value = 1;
+          handleCurrentChange(1);
+        }
+      });
+    })
+    .catch(() => {
+      ElMessage({
+        type: "info",
+        message: "已取消删除",
+      });
     });
-    count.value = 0;
-   
-  }
 };
 // 展示当前页面数据条数的方法
 const handleSizeChange = (val: number) => {

@@ -15,6 +15,8 @@ const mocks = [...userMock, ...brandsMock, ...productsMock];
       const res = Mock.onGet(mockItem.url).reply(mockItem.response);
     } else if (mockItem.method.toUpperCase() === "POST") {
       Mock.onPost(mockItem.url).reply(mockItem.response);
+    }else if (mockItem.method.toUpperCase() === "DELETE") {
+      Mock.onDelete(mockItem.url).reply(mockItem.response);
     }
   });
 })();

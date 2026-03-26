@@ -81,6 +81,37 @@ const productsMock: Array<{ url: string; method: string; response: any }> = [
       }
     },
   },
+  {
+    url: "/api/products/deleteById",
+    method: "DELETE",
+    response: (config: any) => {
+      const { id } = config.params;
+      const token = config.headers?.Authorization;
+
+      if (users.has(token)) {
+        generateProductList().splice(
+          generateProductList().findIndex((item) => item.id === id),
+          1,
+        );
+        console.log('请求成功')
+        return [
+          200,
+          {
+            code: 200,
+            message: "删除商品成功",
+          },
+        ];
+      } else {
+        return [
+          400,
+          {
+            code: 400,
+            message: "删除商品失败",
+          },
+        ];
+      }
+    },
+  },
 ];
 
 export default productsMock;
