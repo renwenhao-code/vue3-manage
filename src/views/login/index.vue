@@ -44,7 +44,7 @@
 import { reactive } from "vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "@/stores/user";
-
+import { ElMessage } from "element-plus";
 import type { UserInfo, LoginResponse } from "@/type";
 const loginInfo = reactive({
   name: "admin",
@@ -60,9 +60,9 @@ async function submit() {
     if (res && res.code === 200) {
       router.push("/");
     }
-    // router.push("/");
+    ElMessage.success("登录成功");
   } catch (error) {
-    console.error("登录失败:", error);
+    ElMessage.error(error);
   }
 }
 </script>
@@ -71,7 +71,7 @@ async function submit() {
 .login {
   height: 100vh;
   background: url("@/assets/images/login.avif") no-repeat center center;
-    // background-color: #2a5c8a; 
+  // background-color: #2a5c8a;
   background-size: cover;
 
   /* 毛玻璃登录框 */

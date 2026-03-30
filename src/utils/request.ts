@@ -31,12 +31,13 @@ request.interceptors.response.use(
     if (response.data?.code == 200) {
       return response.data;
     } else {
-      return Promise.reject(response.data.message || "请求失败");
+      return Promise.reject("请求失败");
     }
   },
   (error) => {
     // 对响应错误做点什么
-    return Promise.reject(error);
+
+    return Promise.reject(error.response.data.message);
   },
 );
 

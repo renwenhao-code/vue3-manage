@@ -63,8 +63,8 @@
 <script lang="ts" setup>
 import { computed, ref, onMounted, watch } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
-import { getProducts, deleteProduct } from "@/api/products";
-import {useProductsStore} from "@/stores/products.ts";
+// import { getProducts, deleteProduct } from "@/api/products";
+import { useProductsStore } from "@/stores/products.ts";
 import type { Product } from "@/type/index";
 //表格数据收集
 const tableData = ref<Product[]>([]);
@@ -77,18 +77,24 @@ const currentPage = ref(1);
 // 当前页面数据条数
 const currentTableData = ref<Product[]>([]);
 
-onMounted(async () => {
-  // useProductsStore().getProductsList();
+const { getProductsList, deleteProductById } = useProductsStore();
 
-  await getProducts().then((res) => {
-    tableData.value = res.data;
-    currentTableData.value = res.data;
-    total.value = res.data.length;
-  });
+onMounted(async () => {
+  // 获取产品列表
+  await getProductsList()
+    .then((res) => {
+      tableData.value = res.data;
+      currentTableData.value = res.data;
+      total.value = res.data.length;
+    })
+    .catch((err) => {
+      ElMessage.error(err.message);
+    });
+  //初始化分页
   handleSizeChange(pageSize.value);
 });
 const search = ref("");
-// 实现筛选效果
+// 实现筛选效果，当用户搜索时在全部数据中进行搜索
 const filterTableData = computed(() => {
   if (search.value !== "") {
     const filterData = tableData.value.filter(
@@ -114,8 +120,8 @@ const handleEdit = (index: number, row: Product) => {
 // 删除按钮
 const count = ref(1);
 const handleDelete = async (index: number, row: Product) => {
+  // 找到要删除ID在数组中的索引
   const productIndex = tableData.value.findIndex((item) => item.id === row.id);
-
   // 确认删除弹框
   ElMessageBox.confirm("此操作将永久删除此项, 是否继续?", "提示", {
     confirmButtonText: "确定",
@@ -125,36 +131,39 @@ const handleDelete = async (index: number, row: Product) => {
     .then(async () => {
       // 确认删除的后续操作
       // 发送删除请求
-      await deleteProduct(row.id).then((res) => {
-        ElMessage({
-          type: "success",
-          message: "删除成功",
-        });
-        // 将本地的数据同时删除
-        console.log("这是删除的索引", productIndex);
-        tableData.value.splice(productIndex, 1);
-        const currentPageDeleteProductIndex = currentTableData.value.findIndex(
-          (item) => item.id === row.id
-        );
-        currentTableData.value.splice(currentPageDeleteProductIndex, 1);
-        // 重新计算总数据
-        total.value = tableData.value.length;
-        // 记录删除多少条数据，如果大于当前展示页的数据跳转到首页
-        if (count.value < pageSize.value) {
-          count.value++;
-          console.log("这是删除的条数", count.value);
-        } else {
+      await deleteProductById(row.id)
+        .then((res) => {
           ElMessage({
-            type: "warning",
-            message: "当前页数据已被全部删除,已为你跳转至首页",
+            type: "success",
+            message: "删除成功",
           });
-          // 将删除的计数重置
-          count.value = 1;
-          // 跳转到下一页
-          currentPage.value = 1;
-          handleCurrentChange(1);
-        }
-      });
+          // 将本地的数据同时删除
+          tableData.value.splice(productIndex, 1);
+          // 将当前页的数据项同时删除
+          const currentPageDeleteProductIndex =
+            currentTableData.value.findIndex((item) => item.id === row.id);
+          currentTableData.value.splice(currentPageDeleteProductIndex, 1);
+          // 重新计算总数据
+          total.value = tableData.value.length;
+          // 记录删除多少条数据，如果大于当前展示页的数据跳转到首页
+          if (count.value < pageSize.value) {
+            count.value++;
+            console.log("这是删除的条数", count.value);
+          } else {
+            ElMessage({
+              type: "warning",
+              message: "当前页数据已被全部删除,已为你跳转至首页",
+            });
+            // 将删除的计数重置
+            count.value = 1;
+            // 跳转到下一页
+            currentPage.value = 1;
+            handleCurrentChange(1);
+          }
+        })
+        .catch((err) => {
+          ElMessage.error(err);
+        });
     })
     .catch(() => {
       ElMessage({
@@ -174,7 +183,6 @@ const handleSizeChange = (val: number) => {
 // 展示当前页码数的方法
 const handleCurrentChange = (val: number) => {
   // 将当前页码数和每页展示的数据条数作为参数，将数据按照要求进行切割
-
   currentTableData.value = tableData.value.slice(
     (val - 1) * pageSize.value,
     val * pageSize.value

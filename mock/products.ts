@@ -54,6 +54,9 @@ const generateProductList = (count: number = 100): Product[] => {
   return products;
 };
 
+
+const products = generateProductList();
+
 // 将mock api统一暴露出去
 const productsMock: Array<{ url: string; method: string; response: any }> = [
   {
@@ -67,7 +70,7 @@ const productsMock: Array<{ url: string; method: string; response: any }> = [
           {
             code: 200,
             message: "获取商品列表成功",
-            data: generateProductList(),
+            data: products,
           },
         ];
       } else {
@@ -87,13 +90,12 @@ const productsMock: Array<{ url: string; method: string; response: any }> = [
     response: (config: any) => {
       const { id } = config.params;
       const token = config.headers?.Authorization;
-
-      if (users.has(token)) {
-        generateProductList().splice(
-          generateProductList().findIndex((item) => item.id === id),
-          1,
-        );
-        console.log('请求成功')
+      const itemIndex = products.findIndex(
+        (item) => item.id == id,
+      );
+      console.log(id);
+      if (users.has(token) && itemIndex !== -1) {
+        products.splice(itemIndex, 1);
         return [
           200,
           {
