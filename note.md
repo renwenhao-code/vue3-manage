@@ -52,3 +52,54 @@ return Promise.reject(response.data.message || "请求失败");
 return Promise.reject(error);
 },
 );
+
+##通过ref操作子组件中的属性和方法
+
+//父组件
+<template>
+
+  <div>
+    <Child ref="childRef" />
+    <button @click="changeChild">改变子组件的值</button>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref } from "vue";
+import Child from "./Child.vue";
+
+const childRef = ref(null);
+
+const changeChild = () => {
+  childRef.value.changeChildValue();
+};
+</script>
+
+//子组件
+<template>
+
+  <div>
+    <p>{{ childValue }}</p>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, defineExpose } from "vue";
+
+const childValue = ref("子组件的值");
+
+function changeChildValue(){
+  console.log("子组件的方法");
+}
+//暴露出子组件的方法和属性
+defineExpose({
+  changeChildValue,
+});
+</script>
+##组件间通信
+使用自定义事件时子组件要定义
+const emit=defineEmits(["自定义事件属性名",""])
+父组件使用时
+<Child @自定义事件属性名="父组件方法" />
+
+

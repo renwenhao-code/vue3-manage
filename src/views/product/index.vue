@@ -3,6 +3,7 @@
     class="product-table"
     :data="filterTableData"
     style="width: 100%"
+    v-loading="loadingTable"
     stripe
   >
     <el-table-column label="名称" prop="name" align="center" width="120" />
@@ -49,6 +50,7 @@
   </el-table>
   <div class="demo-pagination-block">
     <el-pagination
+      v-loading="loadingTable"
       v-model:current-page="currentPage"
       v-model:page-size="pageSize"
       :page-sizes="[10, 50, 100, 200]"
@@ -58,12 +60,16 @@
       @current-change="handleCurrentChange"
     />
   </div>
+  <MessageBoxPup
+    ref="MessageBox"
+    @custom-event-getProduct="customEventGetProduct"
+  />
 </template>
 
 <script lang="ts" setup>
 import { computed, ref, onMounted, watch } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
-// import { getProducts, deleteProduct } from "@/api/products";
+import MessageBoxPup from "@/components/messageBox/index.vue";
 import { useProductsStore } from "@/stores/products.ts";
 import type { Product } from "@/type/index";
 //表格数据收集
@@ -76,23 +82,33 @@ const pageSize = ref<number>(10);
 const currentPage = ref(1);
 // 当前页面数据条数
 const currentTableData = ref<Product[]>([]);
-
-const { getProductsList, deleteProductById } = useProductsStore();
+//解构store中的方法
+const { storeGetProductsList, storeDeleteProductById } = useProductsStore();
+//操作子组件中的属性和方法
+const MessageBox = ref<InstanceType<typeof MessageBoxPup>>();
+// 表格loading
+const loadingTable = ref<boolean>(true);
 
 onMounted(async () => {
   // 获取产品列表
-  await getProductsList()
+  await initTableData();
+});
+
+const initTableData = async () => {
+  await storeGetProductsList()
     .then((res) => {
       tableData.value = res.data;
       currentTableData.value = res.data;
       total.value = res.data.length;
+      loadingTable.value = false;
     })
     .catch((err) => {
       ElMessage.error(err.message);
     });
   //初始化分页
   handleSizeChange(pageSize.value);
-});
+};
+
 const search = ref("");
 // 实现筛选效果，当用户搜索时在全部数据中进行搜索
 const filterTableData = computed(() => {
@@ -115,7 +131,8 @@ const filterTableData = computed(() => {
 // })
 // 编辑按钮
 const handleEdit = (index: number, row: Product) => {
-  console.log(index, row);
+  //操作子组件中的属性和方法
+  MessageBox.value?.showMessageBox(row);
 };
 // 删除按钮
 const count = ref(1);
@@ -131,7 +148,7 @@ const handleDelete = async (index: number, row: Product) => {
     .then(async () => {
       // 确认删除的后续操作
       // 发送删除请求
-      await deleteProductById(row.id)
+      await storeDeleteProductById(row.id)
         .then((res) => {
           ElMessage({
             type: "success",
@@ -148,7 +165,6 @@ const handleDelete = async (index: number, row: Product) => {
           // 记录删除多少条数据，如果大于当前展示页的数据跳转到首页
           if (count.value < pageSize.value) {
             count.value++;
-            console.log("这是删除的条数", count.value);
           } else {
             ElMessage({
               type: "warning",
@@ -187,6 +203,19 @@ const handleCurrentChange = (val: number) => {
     (val - 1) * pageSize.value,
     val * pageSize.value
   );
+};
+//接受子组件Product是否修改完毕
+const customEventGetProduct = async (e) => {
+  loadingTable.value = true;
+  if (e) {
+    // 获取产品列表
+    try {
+      await initTableData();
+      ElMessage.success("修改成功");
+    } catch (error) {
+      ElMessage.error(error);
+    }
+  }
 };
 </script>
 

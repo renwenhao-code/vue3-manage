@@ -27,12 +27,12 @@
         </el-form-item>
 
         <el-form-item class="login-btn-content">
-          <el-button
+          <BaseButton
             class="login-btn"
             type="primary"
             size="large"
             @click="submit"
-            >提交</el-button
+            >提交</BaseButton
           >
         </el-form-item>
       </el-form>
@@ -53,7 +53,7 @@ const loginInfo = reactive({
 
 const router = useRouter();
 
-async function submit() {
+async function submit(done) {
   try {
     const userStore = useUserStore();
     let res = await userStore.login(loginInfo);
@@ -63,6 +63,8 @@ async function submit() {
     ElMessage.success("登录成功");
   } catch (error) {
     ElMessage.error(error);
+  }finally{
+    done()
   }
 }
 </script>

@@ -30,6 +30,7 @@ const initChart = () => {
 
   // 创建ECharts实例
   chartInstance = echarts.init(chartRef.value);
+  
 
   // 配置图表选项
   const option = {

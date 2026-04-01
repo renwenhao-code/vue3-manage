@@ -54,7 +54,6 @@ const generateProductList = (count: number = 100): Product[] => {
   return products;
 };
 
-
 const products = generateProductList();
 
 // 将mock api统一暴露出去
@@ -90,9 +89,7 @@ const productsMock: Array<{ url: string; method: string; response: any }> = [
     response: (config: any) => {
       const { id } = config.params;
       const token = config.headers?.Authorization;
-      const itemIndex = products.findIndex(
-        (item) => item.id == id,
-      );
+      const itemIndex = products.findIndex((item) => item.id == id);
       console.log(id);
       if (users.has(token) && itemIndex !== -1) {
         products.splice(itemIndex, 1);
@@ -111,6 +108,22 @@ const productsMock: Array<{ url: string; method: string; response: any }> = [
             message: "删除商品失败",
           },
         ];
+      }
+    },
+  },
+  {
+    url: "/api/products/edit",
+    method: "POST",
+    response: (config: any) => {
+      const token = config.headers?.Authorization;
+      const { id } = JSON.parse(config.data); // 仅需要 id 用于查找
+      const itemIndex = products.findIndex((item) => item.id == id);
+      if (users.has(token) && itemIndex !== -1) {
+        // 直接将请求参数合并到原产品对象
+        Object.assign(products[itemIndex], JSON.parse(config.data));
+        return [200, { code: 200, message: "修改成功" }];
+      } else {
+        return [400, { code: 400, message: "修改失败" }];
       }
     },
   },

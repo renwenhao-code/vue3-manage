@@ -9,11 +9,15 @@ import { createPinia } from "pinia";
 import Router from "./router";
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 
+import BaseButton from "@/components/baseButton/index.vue";
+
+
+
 const app = createApp(App);
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component);
 }
-
+app.component("BaseButton", BaseButton);
 const pinia = createPinia();
 
 app.use(ElementPlus);

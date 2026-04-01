@@ -11,3 +11,7 @@ export function deleteProduct(id: string): Promise<ApiResponse<any>> {
     ApiResponse<any>
   >;
 }
+
+export function editProduct(product: Product): Promise<ApiResponse<any>> {
+  return request.post(`/products/edit`, product) as Promise<ApiResponse<any>>;
+}
