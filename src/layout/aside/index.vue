@@ -57,7 +57,7 @@ const props = defineProps({
 });
 const router = useRouter();
 const route = useRoute();
-const menus = reactive(router.options.routes)[0].children;
+const menus = reactive(router.options.routes)[0]?.children;
 // console.log(router.getRoutes())
 onMounted(() => {});
 </script>

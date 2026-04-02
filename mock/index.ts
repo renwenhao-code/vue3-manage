@@ -2,7 +2,7 @@
 
 import MockAdapter from "axios-mock-adapter"; //引入axios-mock-adapter
 import request from "@/utils/request"; //引入axios
-const Mock = new MockAdapter(request, { delayResponse: 2000 }); //创建MockAdapter实例，传入axios实例
+const Mock = new MockAdapter(request, { delayResponse: 1000 }); //创建MockAdapter实例，传入axios实例
 
 import userMock from "./user";
 import brandsMock from "./brands";

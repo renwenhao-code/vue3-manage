@@ -32,7 +32,7 @@ const brandsMock: Array<{ url: string; method: string; response: any }> = [
         200,
         {
           code: 200,
-          data: brands,
+          data: brands.brands,
           message: "获取品牌数据成功",
         },
       ];

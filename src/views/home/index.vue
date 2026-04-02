@@ -39,11 +39,7 @@
           <el-col :span="8">
             <div class="grid-content">
               <el-card>
-                <el-table
-                  :data="tableData.brands"
-                  style="width: 100%"
-                  height="100%"
-                >
+                <el-table :data="tableData" style="width: 100%" height="100%">
                   <el-table-column align="center" prop="name" label="品牌" />
                   <el-table-column
                     align="center"
@@ -69,8 +65,8 @@
             <div class="grid-content">
               <el-card>
                 <Pie
-                  v-if="tableData.brands.length > 0"
-                  :tableData="tableData.brands"
+                v-if="tableData?.length"
+                  :tableData="tableData"
                 />
               </el-card>
             </div>
@@ -143,8 +139,8 @@
             <div class="grid-content">
               <el-card>
                 <Line
-                  v-if="tableData.brands.length > 0"
-                  :tableData="tableData.brands"
+                 v-if="tableData?.length"
+                  :tableData="tableData"
                 />
               </el-card>
             </div>
@@ -155,8 +151,8 @@
             <div class="grid-content">
               <el-card>
                 <Bar
-                  v-if="tableData.brands.length > 0"
-                  :tableData="tableData.brands"
+                 v-if="tableData?.length"
+                  :tableData="tableData"
                 />
               </el-card>
             </div>
@@ -177,21 +173,21 @@ import Bar from "@/components/echarts/bar/index.vue";
 
 import { getBrands } from "@/api/brands";
 
-
-import type { BrandList } from "@/type";
+import type { Brand,BrandList, ApiResponse } from "@/type";
 
 // 使用用户信息的store
 const userStore = useUserStore();
 
 // 定义表格数据的响应式变量，初始值为一个空的品牌列表对象
-const tableData = ref<BrandList>({ brands: [] });
+const tableData = ref<Brand[]|undefined>(undefined);
+// const tableData = ref<BrandList | undefined>(undefined);
 
 //页面挂载完毕后获取品牌数据
 onMounted(async () => {
   try {
     const response = await getBrands();
     tableData.value = response.data;
-  } catch (error) {
+  } catch (error: string | any) {
     console.error("获取品牌数据失败：", error);
   }
 });
@@ -203,31 +199,28 @@ const userInfo = computed(() => {
 
 // 计算属性：计算所有品牌的日销量总和
 const dailyTotalSales = computed(() => {
-  return tableData.value.brands.reduce(
-    (total, brand) => total + brand.dailySales,
-    0
-  );
+  return tableData.value?.reduce((total: number, brand: Brand) => total + brand.dailySales, 0);
 });
 
 // 计算属性：计算所有品牌的月销量总和
 const monthlyTotalSales = computed(() => {
-  return tableData.value.brands.reduce(
-    (total, brand) => total + brand.monthlySales,
-    0
+  return tableData.value?.reduce(
+    (total: number, brand: Brand) => total + brand.monthlySales,
+    0,
   );
 });
 
 // 计算属性：计算所有品牌的年销量总和
 const annualTotalSales = computed(() => {
-  return tableData.value.brands.reduce(
-    (total, brand) => total + brand.annualSales,
-    0
+  return tableData.value?.reduce(
+    (total: number, brand: Brand) => total + brand.annualSales,
+    0,
   );
 });
 </script>
 
 <style scoped lang="less">
-.home-content{
+.home-content {
   overflow-y: scroll;
   height: 100vh;
   min-width: 1190px;
@@ -251,5 +244,3 @@ const annualTotalSales = computed(() => {
   }
 }
 </style>
- 
-

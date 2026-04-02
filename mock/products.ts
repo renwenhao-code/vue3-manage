@@ -119,8 +119,11 @@ const productsMock: Array<{ url: string; method: string; response: any }> = [
       const { id } = JSON.parse(config.data); // 仅需要 id 用于查找
       const itemIndex = products.findIndex((item) => item.id == id);
       if (users.has(token) && itemIndex !== -1) {
+        const product = products[itemIndex];
         // 直接将请求参数合并到原产品对象
-        Object.assign(products[itemIndex], JSON.parse(config.data));
+        if (product) {
+          Object.assign(product, JSON.parse(config.data));
+        }
         return [200, { code: 200, message: "修改成功" }];
       } else {
         return [400, { code: 400, message: "修改失败" }];

@@ -23,7 +23,7 @@ import Aside from "./aside/index.vue";
 import Main from "./main/index.vue";
 // 父组件接收子组件的状态并向aside传递collapse的状态
 const isCollapse = ref(false);
-function customIsCollapse(e) {
+function customIsCollapse(e: boolean) {
   isCollapse.value = e;
 }
 </script>

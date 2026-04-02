@@ -1,8 +1,8 @@
 <template>
   <div class="message-box-container">
-    <el-button type="primary" @click="showMessageBox"
+    <!-- <el-button type="primary" @click="showMessageBox"
       >显示可拖拽消息框</el-button
-    >
+    > -->
     <el-dialog
       v-model="dialogFormVisible"
       title="编辑商品"
@@ -123,7 +123,7 @@ let stopWatch = watch(
 );
 
 // 需要赋值但不触发 watch 的操作
-const updateWithoutTrigger = (newData) => {
+const updateWithoutTrigger = (newData: Product) => {
   // 1. 停止监听
   stopWatch();
   // 2. 执行赋值
@@ -131,7 +131,7 @@ const updateWithoutTrigger = (newData) => {
   // 3. 重新开启监听
   stopWatch = watch(
     goods,
-    (newVal) => {
+    (newVal: Product) => {
       submitDisabled.value = false;
     },
     { deep: true }
@@ -171,7 +171,7 @@ function calcelForm() {
   };
 }
 //提交数据请求
-async function submitForm(done) {
+async function submitForm(done: () => void){
   try {
     await storeEditProduct(goods.value);
     dialogFormVisible.value = false;

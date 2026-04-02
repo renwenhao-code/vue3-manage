@@ -19,11 +19,12 @@ const props = defineProps({
 const { names, dailysales, monthlysales, annualsales } = useBrandData(props);
 
 const seriesData = computed(() => {
-  return annualsales.value.map((item, index) => ({
+  return annualsales.value?.map((item, index) => ({
     value: item,
     name: names.value[index],
   }));
 });
+
 
 
 // 定义图表容器的引用

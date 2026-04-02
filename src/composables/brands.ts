@@ -4,6 +4,7 @@ import type { BrandList, Brand } from "@/type";
 
 
 export function useBrandData(props: { tableData: Brand[] }) {
+  
   const names = computed(() => {
     return props.tableData.map((item) => item.name);
   });

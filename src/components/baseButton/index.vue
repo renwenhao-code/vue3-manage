@@ -23,7 +23,7 @@ const handleClick = () => {
   if (loading.value) return
   loading.value = true
   // 定义 done 回调，由父组件在异步操作完成后调用
-  const done = () => {
+  const done = ():void => {
     loading.value = false
   }
   emit('click', done)

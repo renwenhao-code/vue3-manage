@@ -15,7 +15,8 @@ users.set("admin-token", {
 users.set("editor-token", {
   roles: ["editor"],
   introduction: "我是普通编辑",
-  avatar: "../public/dog.gif",
+  // avatar: "../public/dog.gif",
+  avatar: "@/assets/user/dog.gif",
   name: "普通编辑",
   password: "1234567",
 });

@@ -1,17 +1,28 @@
+// {
+//   "compilerOptions": {
+//     "target": "ES2022",
+//     "module": "ESNext",
+//     "moduleResolution": "Node",
+//     "strict": true,
+//     "skipLibCheck": true,
+//     "noEmit": true,
+//     "esModuleInterop": true,
+//     "types": ["node"],
+//     // 关闭冲突选项
+//     "verbatimModuleSyntax": false,
+//     "noUncheckedSideEffectImports": false,
+//     "erasableSyntaxOnly": false
+//   },
+//   "include": ["vite.config.ts"]
+// }
 {
+  "extends": "@vue/tsconfig/tsconfig.json",
   "compilerOptions": {
-    "target": "ES2022",
+    "composite": true,
     "module": "ESNext",
-    "moduleResolution": "Node",
-    "strict": true,
-    "skipLibCheck": true,
-    "noEmit": true,
-    "esModuleInterop": true,
-    "types": ["node"],
-    // 关闭冲突选项
-    "verbatimModuleSyntax": false,
-    "noUncheckedSideEffectImports": false,
-    "erasableSyntaxOnly": false
+    "moduleResolution": "bundler"
   },
-  "include": ["vite.config.ts"]
+  "include": [
+    "vite.config.ts"
+  ]
 }

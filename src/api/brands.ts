@@ -1,7 +1,8 @@
 import request from "@/utils/request";
 
 import type { Brand, ApiResponse, BrandList } from "@/type";
+import type { AxiosResponse } from "axios";
 
-export function getBrands(): Promise<ApiResponse<BrandList>> {
-  return request.get("/brands") as Promise<ApiResponse<BrandList>>;
+export function getBrands(): Promise<ApiResponse<Brand[]>> {
+  return request.get("/brands") as Promise<ApiResponse<Brand[]>>;
 }

@@ -45,23 +45,23 @@ import { reactive } from "vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "@/stores/user";
 import { ElMessage } from "element-plus";
-import type { UserInfo, LoginResponse } from "@/type";
-const loginInfo = reactive({
+import type { UserInfo, LoginResponse,ApiResponse } from "@/type";
+const loginInfo:UserInfo = reactive({
   name: "admin",
   password: "123456",
 });
 
 const router = useRouter();
 
-async function submit(done) {
+async function submit(done:()=>void) {
   try {
     const userStore = useUserStore();
-    let res = await userStore.login(loginInfo);
+    let res = await userStore.login(loginInfo) as ApiResponse<LoginResponse>;
     if (res && res.code === 200) {
       router.push("/");
     }
     ElMessage.success("登录成功");
-  } catch (error) {
+  } catch (error:string|any) {
     ElMessage.error(error);
   }finally{
     done()
@@ -133,4 +133,4 @@ async function submit(done) {
     }
   }
 }
-</style>
+</style>只修复ts类型
