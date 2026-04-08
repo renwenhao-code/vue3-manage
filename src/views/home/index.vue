@@ -1,7 +1,78 @@
 <template>
   <div class="home-content">
+    <div v-if="loading" class="loading-skeleton">
+      <el-skeleton animated :count="1" :throttle="500">
+        <template #template>
+          <el-row :gutter="10">
+            <!-- 左侧区域 -->
+            <el-col :span="8">
+              <el-row class="user-info-column" :gutter="10">
+                <el-col :span="24">
+                  <el-skeleton-item
+                    variant="rect"
+                    style="height: 180px; width: 100%"
+                  />
+                </el-col>
+                <el-col :span="24">
+                  <el-skeleton-item
+                    variant="rect"
+                    style="height: 300px; width: 100%"
+                  />
+                </el-col>
+                <el-col :span="24">
+                  <el-skeleton-item
+                    variant="rect"
+                    style="height: 400px; width: 100%"
+                  />
+                </el-col>
+              </el-row>
+            </el-col>
+
+            <!-- 右侧区域 -->
+            <el-col :span="16">
+              <el-row :gutter="10">
+                <el-col :span="8">
+                  <el-skeleton-item
+                    variant="rect"
+                    style="height: 120px; width: 100%"
+                  />
+                </el-col>
+                <el-col :span="8">
+                  <el-skeleton-item
+                    variant="rect"
+                    style="height: 120px; width: 100%"
+                  />
+                </el-col>
+                <el-col :span="8">
+                  <el-skeleton-item
+                    variant="rect"
+                    style="height: 120px; width: 100%"
+                  />
+                </el-col>
+              </el-row>
+              <el-row :gutter="10" style="margin-top: 20px">
+                <el-col :span="24">
+                  <el-skeleton-item
+                    variant="rect"
+                    style="height: 310px; width: 100%"
+                  />
+                </el-col>
+              </el-row>
+              <el-row :gutter="10" style="margin-top: 20px">
+                <el-col :span="24">
+                  <el-skeleton-item
+                    variant="rect"
+                    style="height: 415px; width: 100%"
+                  />
+                </el-col>
+              </el-row>
+            </el-col>
+          </el-row>
+        </template>
+      </el-skeleton>
+    </div>
     <!-- 上部分：左中右三列布局 -->
-    <el-row :gutter="10">
+    <el-row v-else :gutter="10">
       <el-col :span="8">
         <el-row :gutter="10" class="user-info-column">
           <el-col :span="8">
@@ -63,11 +134,8 @@
 
           <el-col :span="8">
             <div class="grid-content">
-              <el-card>
-                <Pie
-                v-if="tableData?.length"
-                  :tableData="tableData"
-                />
+              <el-card style="height: 400px">
+                <Pie :tableData="tableData" />
               </el-card>
             </div>
           </el-col>
@@ -137,11 +205,8 @@
         <el-row :gutter="10">
           <el-col :span="24">
             <div class="grid-content">
-              <el-card>
-                <Line
-                 v-if="tableData?.length"
-                  :tableData="tableData"
-                />
+              <el-card style="height: 310px">
+                <Line :tableData="tableData" />
               </el-card>
             </div>
           </el-col>
@@ -149,11 +214,8 @@
         <el-row :gutter="10">
           <el-col :span="24">
             <div class="grid-content">
-              <el-card>
-                <Bar
-                 v-if="tableData?.length"
-                  :tableData="tableData"
-                />
+              <el-card style="height: 415px">
+                <Bar :tableData="tableData" />
               </el-card>
             </div>
           </el-col>
@@ -167,28 +229,33 @@
 import { ref, reactive, computed, onMounted } from "vue";
 import { useUserStore } from "@/stores/user";
 
-import Line from "@/components/echarts/line/index.vue";
-import Pie from "@/components/echarts/pie/index.vue";
-import Bar from "@/components/echarts/bar/index.vue";
+import Line from "./components/echarts/line/index.vue";
+import Pie from "./components/echarts/pie/index.vue";
+import Bar from "./components/echarts/bar/index.vue";
 
 import { getBrands } from "@/api/brands";
 
-import type { Brand,BrandList, ApiResponse } from "@/type";
+import type { Brand, BrandList, ApiResponse } from "@/type";
 
 // 使用用户信息的store
 const userStore = useUserStore();
 
 // 定义表格数据的响应式变量，初始值为一个空的品牌列表对象
-const tableData = ref<Brand[]|undefined>(undefined);
+const tableData = ref<Brand[] | undefined>(undefined);
 // const tableData = ref<BrandList | undefined>(undefined);
+// 添加loading状态变量
+const loading = ref(true);
 
 //页面挂载完毕后获取品牌数据
 onMounted(async () => {
   try {
+    loading.value = true; // 开始加载
     const response = await getBrands();
     tableData.value = response.data;
   } catch (error: string | any) {
     console.error("获取品牌数据失败：", error);
+  } finally {
+    loading.value = false; // 加载结束
   }
 });
 
@@ -199,7 +266,10 @@ const userInfo = computed(() => {
 
 // 计算属性：计算所有品牌的日销量总和
 const dailyTotalSales = computed(() => {
-  return tableData.value?.reduce((total: number, brand: Brand) => total + brand.dailySales, 0);
+  return tableData.value?.reduce(
+    (total: number, brand: Brand) => total + brand.dailySales,
+    0,
+  );
 });
 
 // 计算属性：计算所有品牌的月销量总和
@@ -220,6 +290,9 @@ const annualTotalSales = computed(() => {
 </script>
 
 <style scoped lang="less">
+.loading-skeleton {
+  padding: 10px;
+}
 .home-content {
   overflow-y: scroll;
   height: 100vh;
@@ -231,7 +304,7 @@ const annualTotalSales = computed(() => {
 .grid-content {
   border-radius: 4px;
   min-height: 36px;
-  background-color: #d3dce6;
+  // background-color: #d3dce6;
   padding: 10px;
   text-align: center;
 }

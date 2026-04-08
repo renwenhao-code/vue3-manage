@@ -45,26 +45,41 @@ import { reactive } from "vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "@/stores/user";
 import { ElMessage } from "element-plus";
-import type { UserInfo, LoginResponse,ApiResponse } from "@/type";
-const loginInfo:UserInfo = reactive({
+import { filterAsyncRoutes } from "@/router/utils";
+import { asyncRoutes } from "@/router/routes";
+
+import type { UserInfo, LoginResponse, ApiResponse } from "@/type";
+const loginInfo: UserInfo = reactive({
   name: "admin",
   password: "123456",
 });
 
 const router = useRouter();
 
-async function submit(done:()=>void) {
+async function submit(done: () => void) {
   try {
     const userStore = useUserStore();
-    let res = await userStore.login(loginInfo) as ApiResponse<LoginResponse>;
+    let res = (await userStore.login(loginInfo)) as ApiResponse<LoginResponse>;
     if (res && res.code === 200) {
-      router.push("/");
+      try {
+        // 先获取用户信息将用户权限放到本地存储中
+        await userStore.getUserInfo();
+
+        const roleStr = localStorage.getItem("roles");
+        const userRoles = roleStr ? JSON.parse(roleStr) : [];
+        const filteredRoutes = filterAsyncRoutes(asyncRoutes, userRoles);
+        filteredRoutes[0] && router.addRoute(filteredRoutes[0]);
+
+        router.push("/");
+      } catch (error: string | any) {
+        ElMessage.error(error);
+      }
     }
     ElMessage.success("登录成功");
-  } catch (error:string|any) {
+  } catch (error: string | any) {
     ElMessage.error(error);
-  }finally{
-    done()
+  } finally {
+    done();
   }
 }
 </script>
@@ -102,7 +117,7 @@ async function submit(done:()=>void) {
 }
 </style>
 
-<style  scoped lang="less">
+<style scoped lang="less">
 :deep(.login-form) {
   .el-form-item__label {
     color: #fff;
@@ -133,4 +148,5 @@ async function submit(done:()=>void) {
     }
   }
 }
-</style>只修复ts类型
+</style>
+只修复ts类型

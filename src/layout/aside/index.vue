@@ -45,7 +45,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, reactive } from "vue";
+import { onMounted, reactive ,computed} from "vue";
 import { useRouter, useRoute } from "vue-router";
 
 // 定义props
@@ -57,8 +57,11 @@ const props = defineProps({
 });
 const router = useRouter();
 const route = useRoute();
-const menus = reactive(router.options.routes)[0]?.children;
-// console.log(router.getRoutes())
+const menus = computed(() => {
+  const layoutRoute = router.getRoutes().find(item => item.name === 'layout');
+  return layoutRoute?.children || [];
+});
+
 onMounted(() => {});
 </script>
 

@@ -37,7 +37,7 @@ function customIsCollapse(e: boolean) {
   }
   .layout-container-right{
      height: 100vh;
-    background-color: #dadada;
+    background-color: #ffffff;
     .header{
       border-bottom: 1px solid #e6e6e6;
     }

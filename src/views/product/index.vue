@@ -50,7 +50,7 @@
   </el-table>
   <div class="demo-pagination-block">
     <el-pagination
-      v-loading="loadingTable"
+      :disabled="loadingTable"
       v-model:current-page="currentPage"
       v-model:page-size="pageSize"
       :page-sizes="[10, 50, 100, 200]"
@@ -69,7 +69,7 @@
 <script lang="ts" setup>
 import { computed, ref, onMounted, watch } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
-import MessageBoxPup from "@/components/messageBox/index.vue";
+import MessageBoxPup from "./components/messageBox/index.vue";
 import { useProductsStore } from "@/stores/products.ts";
 import type { Product ,  ApiResponse} from "@/type/index";
 //表格数据收集

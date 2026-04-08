@@ -1,61 +1,33 @@
-// {
-//   "extends": "@vue/tsconfig/tsconfig.dom.json",
-//   "compilerOptions": {
-//     "target": "ES2020",
-//     "module": "ESNext",
-//     "moduleResolution": "Node",
-//     "strict": true,
-//     "jsx": "preserve",
-//     "sourceMap": true,
-//     "resolveJsonModule": true,
-//     "isolatedModules": true,
-//     "esModuleInterop": true,
-//     "lib": ["ES2020", "DOM", "DOM.Iterable"],
-//     "noEmit": true,
-//     "baseUrl": ".",
-//     "paths": {
-//       "@/*": ["src/*"] // 配置 @ 别名，适配 Vue 项目习惯
-//     },
-//     // 关闭新手坑选项，避免语法冲突
-//     "verbatimModuleSyntax": false,
-//     "noUncheckedSideEffectImports": false,
-//     "erasableSyntaxOnly": false,
-//     // 实用的严格检查（保留，不影响开发）
-//     "noUnusedLocals": false, // 开发阶段关闭，避免未使用变量爆红
-//     "noUnusedParameters": false,
-//     "noFallthroughCasesInSwitch": true
-//   },
-//   "include": [
-//     "src/**/*.ts",
-//     "src/**/*.d.ts",
-//     "src/**/*.tsx",
-//     "src/**/*.vue"
-//   ],
-//   "exclude": ["node_modules", "dist"]
-// }
+
 {
   "extends": "@vue/tsconfig/tsconfig.json",
   "compilerOptions": {
-    "target": "ESNext",
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "types": [
-      "element-plus/global"
-    ],
-    "skipLibCheck": true,
+    "baseUrl": "./",
     "paths": {
       "@/*": [
-        "./src/*"
+        "src/*"
       ]
     },
-    "baseUrl": ".",
-    "allowJs": true,
-    "jsx": "preserve"
+    "verbatimModuleSyntax": true,
+    // "target": "ESNext",
+    // "module": "ESNext",
+    // "moduleResolution": "node",
+    // // "moduleResolution": "bundler",
+    // "esModuleInterop": true,
+    // "allowSyntheticDefaultImports": true,
+    // "types": [
+    //   "element-plus/global"
+    // ],
+    // "skipLibCheck": true,
+    
+    
+    // "allowJs": true,
+    // "jsx": "preserve"
   },
   "include": [
-    "src/**/*.ts",
-    "src/**/*.d.ts",
-    "src/**/*.vue"
+    "src/**/*",
+    "src/**/*.vue",
+    "env.d.ts"
   ],
   "exclude": [
     "node_modules",

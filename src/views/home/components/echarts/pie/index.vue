@@ -1,7 +1,5 @@
 <template>
-  <div class="chart-container">
     <div ref="chartRef" class="chart"></div>
-  </div>
 </template>
 
 <script setup>
@@ -18,10 +16,15 @@ const props = defineProps({
 });
 const { names, dailysales, monthlysales, annualsales } = useBrandData(props);
 
+const seriesData = computed(() => {
+  return annualsales.value?.map((item, index) => ({
+    value: item,
+    name: names.value[index],
+  }));
+});
 
-// 创建图表容器的引用
+// 定义图表容器的引用
 const chartRef = ref(null);
-// 存储ECharts实例
 let chartInstance = null;
 
 // 初始化图表
@@ -30,67 +33,40 @@ const initChart = () => {
 
   // 创建ECharts实例
   chartInstance = echarts.init(chartRef.value);
-  
 
-  // 配置图表选项
+  // 配置饼图选项
   const option = {
     title: {
-      text: "销量折线图",
+      text: "全年销售数据分布",
+      subtext: "2025年度",
       left: "center",
     },
     tooltip: {
-      trigger: "axis",
+      trigger: "item",
+      formatter: "{a} <br/>{b}: {c} ({d}%)",
     },
     legend: {
-      data: ["日销量", "月销量", "年销量"],
-      bottom: 10,
-    },
-    grid: {
-      left: "3%",
-      right: "4%",
-      bottom: "15%",
-      containLabel: true,
-    },
-    xAxis: {
-      type: "category",
-      boundaryGap: false,
-      data: names.value,
-    },
-    yAxis: {
-      type: "value",
+      orient: "vertical",
+      left: "left",
     },
     series: [
       {
-        name: "日销量",
-        type: "line",
-        data: dailysales.value,
-        smooth: true,
-        itemStyle: {
-          color: "#5470c6",
-        },
-      },
-      {
-        name: "月销量",
-        type: "line",
-        data: monthlysales.value,
-        smooth: true,
-        itemStyle: {
-          color: "#91cc75",
-        },
-      },
-      {
-        name: "年销量",
-        type: "line",
-        data: annualsales.value,
-        smooth: true,
-        itemStyle: {
-          color: "pink",
+        name: "销售数据",
+        type: "pie",
+        radius: "50%",
+        data: seriesData.value,
+        emphasis: {
+          itemStyle: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowColor: "rgba(0, 0, 0, 0.5)",
+          },
         },
       },
     ],
   };
 
-  // 设置图表选项
+  // 应用配置
   chartInstance.setOption(option);
 };
 
@@ -104,28 +80,21 @@ const handleResize = () => {
 // 组件挂载后初始化图表
 onMounted(() => {
   initChart();
-  // 添加窗口大小变化监听
   window.addEventListener("resize", handleResize);
 });
 
-// 组件卸载前销毁图表实例
+// 组件卸载前清理资源
 onBeforeUnmount(() => {
   if (chartInstance) {
     chartInstance.dispose();
     chartInstance = null;
   }
-  // 移除窗口大小变化监听
   window.removeEventListener("resize", handleResize);
 });
 </script>
 
 <style scoped>
-.chart-container {
-  width: 100%;
-  height: 310px;
-  padding: 20px;
-  box-sizing: border-box;
-}
+
 
 .chart {
   width: 100%;

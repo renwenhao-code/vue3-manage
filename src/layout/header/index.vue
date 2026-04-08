@@ -41,18 +41,24 @@
   </div>
 </template>
  
-<script setup>
+<script setup lang="ts">
 import { ref, defineEmits, onMounted } from "vue";
 import { useUserStore } from "@/stores/user";
+import {asyncRoutes} from "@/router/routes";
+import router from "@/router/index";
 const emit = defineEmits(["custom-isCollapse"]);
 const isCollapse = ref(false);
+
+import {resetRouter} from "@/router/utils"
 //自定义事件向父组件传递collapse状态
 function handleCollapse() {
   isCollapse.value = !isCollapse.value;
   emit("custom-isCollapse", isCollapse.value);
 }
-function logout() {
+ function  logout() {
   useUserStore().logout();
+ resetRouter(asyncRoutes)
+ router.push("/login");
 }
 
 function getUserInfo() {

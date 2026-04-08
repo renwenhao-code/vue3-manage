@@ -6,7 +6,8 @@ export const users = new Map();
 users.set("admin-token", {
   roles: ["admin"],
   introduction: "我是超级管理员",
-  avatar: "../public/dog.gif",
+  avatar:
+    "https://s1.aigei.com/src/img/gif/6a/6a49e68067f449838e0cd4c842d06b51.gif?e=2051020800&token=P7S2Xpzfz11vAkASLTkfHN7Fw-oOZBecqeJaxypL:JHEdLSp6Xg9UwKY4BFQrRKRIIA0=",
 
   name: "超级管理员",
   password: "123456",
@@ -16,7 +17,8 @@ users.set("editor-token", {
   roles: ["editor"],
   introduction: "我是普通编辑",
   // avatar: "../public/dog.gif",
-  avatar: "@/assets/user/dog.gif",
+  avatar:
+    "https://s1.aigei.com/src/img/gif/6a/6a49e68067f449838e0cd4c842d06b51.gif?e=2051020800&token=P7S2Xpzfz11vAkASLTkfHN7Fw-oOZBecqeJaxypL:JHEdLSp6Xg9UwKY4BFQrRKRIIA0=",
   name: "普通编辑",
   password: "1234567",
 });

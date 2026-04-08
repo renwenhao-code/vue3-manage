@@ -27,6 +27,7 @@ let token = ref<string | null>(getToken() || null);
       // 将用户信息保存到状态管理中
       stateUserInfo.value = loginUserInfo;
       setToken(token.value); // 将token保存到cookie
+      
       // 登录成功， resolve响应数据
       resolve(response);
     } catch (error) {
@@ -45,6 +46,10 @@ let token = ref<string | null>(getToken() || null);
     try {
       const response = await getInfo(); // 获取用户信息
       stateUserInfo.value = response.data;
+      localStorage.setItem(
+        "roles",
+        JSON.stringify(stateUserInfo.value?.roles),
+      );
       resolve(response);
     } catch (error) {
       reject(error);
@@ -56,6 +61,7 @@ function logout() {
   token.value = null;
   stateUserInfo.value = null;
   removeToken(); // 移除的token
+  localStorage.removeItem("roles"); // 移除roles
   router.push("/login"); // 跳转到登录页
 }
 
