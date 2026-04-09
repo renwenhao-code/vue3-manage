@@ -2,7 +2,7 @@
 
 import request from "@/utils/request.ts";
 import MockAdapter from "axios-mock-adapter"; //引入axios-mock-adapter
-const Mock = new MockAdapter(request, { delayResponse: 500 }); //创建MockAdapter实例，传入axios实例
+const Mock = new MockAdapter(request, { delayResponse: 1000 }); //创建MockAdapter实例，传入axios实例
 
 import userMock from "./user";
 import brandsMock from "./brands";

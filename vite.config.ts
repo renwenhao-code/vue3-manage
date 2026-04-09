@@ -11,9 +11,8 @@ export default defineConfig({
       "@": resolve(__dirname, "src"),
     },
   },
+  base: "rwh-github.github.io/manage3",
   server: {
     open: false, // 自动打开浏览器
-    
-  
   },
 });

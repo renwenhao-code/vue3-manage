@@ -1,6 +1,6 @@
 import { ref, computed } from "vue";
 
-import { userLogin, getInfo } from "@/api/user";
+import { userLogin, getInfo, getUserList, deleteUser } from "@/api/user";
 
 import type { UserInfo, LoginResponse } from "@/type";
 
@@ -15,8 +15,8 @@ let token = ref<string | null>(getToken() || null);
  * @param {UserInfo} userInfo - 用户信息对象，包含登录所需的用户名和密码等
  * @returns {Promise} - 返回一个Promise对象，用于处理登录操作的异步结果
  */
- function login(userInfo: UserInfo) {
-  return new Promise( async(resolve, reject) => {
+function login(userInfo: UserInfo) {
+  return new Promise(async (resolve, reject) => {
     try {
       // 调用登录API，传入用户信息
       const response = await userLogin(userInfo); // 登录成功，保存token
@@ -27,7 +27,7 @@ let token = ref<string | null>(getToken() || null);
       // 将用户信息保存到状态管理中
       stateUserInfo.value = loginUserInfo;
       setToken(token.value); // 将token保存到cookie
-      
+
       // 登录成功， resolve响应数据
       resolve(response);
     } catch (error) {
@@ -41,15 +41,35 @@ let token = ref<string | null>(getToken() || null);
  * 获取用户信息的方法
  * @returns {Promise} 返回一个Promise对象，用于异步获取用户信息
  */
- function getUserInfo() {
+function getUserInfo() {
   return new Promise(async (resolve, reject) => {
     try {
       const response = await getInfo(); // 获取用户信息
       stateUserInfo.value = response.data;
-      localStorage.setItem(
-        "roles",
-        JSON.stringify(stateUserInfo.value?.roles),
-      );
+      localStorage.setItem("roles", JSON.stringify(stateUserInfo.value?.roles));
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
+function storeGetUserList() {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await getUserList(); // 获取用户信息
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
+
+function storeDeleteUser(toekn: string) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await deleteUser(toekn); // 获取用户信息
       resolve(response);
     } catch (error) {
       reject(error);
@@ -72,5 +92,7 @@ export function useUserStore() {
     login,
     getUserInfo,
     logout,
+    storeGetUserList,
+    storeDeleteUser,
   };
 }

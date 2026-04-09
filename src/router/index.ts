@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHashHistory } from "vue-router";
 
 import { setupRouterGuard } from "./permission";
 
@@ -10,7 +10,7 @@ import { publicRoutes, asyncRoutes } from "./routes";
 
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes: publicRoutes,
 });
 

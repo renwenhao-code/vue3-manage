@@ -2,22 +2,17 @@
   <el-table
     class="product-table"
     :data="filterTableData"
-    style="width: 100%"
     v-loading="loadingTable"
+    :fit="true"
     stripe
   >
-    <el-table-column label="名称" prop="name" align="center" width="120" />
-    <el-table-column label="价格" prop="price" align="center" width="100" />
-    <el-table-column
-      label="原价"
-      prop="originalPrice"
-      align="center"
-      width="80"
-    />
-    <el-table-column label="库存" prop="stock" align="center" width="80" />
+    <el-table-column label="名称" prop="name" align="center" />
+    <el-table-column label="价格" prop="price" align="center" />
+    <el-table-column label="原价" prop="originalPrice" align="center" />
+    <el-table-column label="库存" prop="stock" align="center" />
     <el-table-column label="类别" prop="category" align="center" />
     <el-table-column label="描述" prop="description" align="center" />
-    <el-table-column label="图片" prop="image" align="center" width="80">
+    <el-table-column label="图片" prop="image" align="center">
       <template #default="scope">
         <img
           class="rounded-2xl text-center inline-block"
@@ -28,7 +23,7 @@
         />
       </template>
     </el-table-column>
-    <el-table-column label="评分" prop="rating" align="center" width="80" />
+    <el-table-column label="评分" prop="rating" align="center" />
     <el-table-column label="销量" prop="sales" align="center" />
     <el-table-column align="center">
       <template #header>
@@ -71,7 +66,7 @@ import { computed, ref, onMounted, watch } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import MessageBoxPup from "./components/messageBox/index.vue";
 import { useProductsStore } from "@/stores/products.ts";
-import type { Product ,  ApiResponse} from "@/type/index";
+import type { Product, ApiResponse } from "@/type/index";
 //表格数据收集
 const tableData = ref<Product[]>([]);
 // 数据总和
@@ -96,13 +91,13 @@ onMounted(async () => {
 
 const initTableData = async () => {
   await storeGetProductsList()
-    .then((res:any) => {
+    .then((res: any) => {
       tableData.value = res.data;
       currentTableData.value = res.data;
       total.value = res.data.length;
       loadingTable.value = false;
     })
-    .catch((err:string|any) => {
+    .catch((err: string | any) => {
       ElMessage.error(err.message);
     });
   //初始化分页
@@ -114,9 +109,9 @@ const search = ref("");
 const filterTableData = computed(() => {
   if (search.value !== "") {
     const filterData = tableData.value.filter(
-      (data:Product) =>
+      (data: Product) =>
         !search.value ||
-        data.name.toLowerCase().includes(search.value.toLowerCase())
+        data.name.toLowerCase().includes(search.value.toLowerCase()),
     );
     total.value = filterData.length;
     return filterData;
@@ -138,7 +133,9 @@ const handleEdit = (index: number, row: Product) => {
 const count = ref(1);
 const handleDelete = async (index: number, row: Product) => {
   // 找到要删除ID在数组中的索引
-  const productIndex = tableData.value.findIndex((item: Product) => item.id === row.id);
+  const productIndex = tableData.value.findIndex(
+    (item: Product) => item.id === row.id,
+  );
   // 确认删除弹框
   ElMessageBox.confirm("此操作将永久删除此项, 是否继续?", "提示", {
     confirmButtonText: "确定",
@@ -149,7 +146,7 @@ const handleDelete = async (index: number, row: Product) => {
       // 确认删除的后续操作
       // 发送删除请求
       await storeDeleteProductById(row.id)
-        .then((res:any) => {
+        .then((res: any) => {
           ElMessage({
             type: "success",
             message: "删除成功",
@@ -158,7 +155,9 @@ const handleDelete = async (index: number, row: Product) => {
           tableData.value.splice(productIndex, 1);
           // 将当前页的数据项同时删除
           const currentPageDeleteProductIndex =
-            currentTableData.value.findIndex((item: Product) => item.id === row.id);
+            currentTableData.value.findIndex(
+              (item: Product) => item.id === row.id,
+            );
           currentTableData.value.splice(currentPageDeleteProductIndex, 1);
           // 重新计算总数据
           total.value = tableData.value.length;
@@ -177,7 +176,7 @@ const handleDelete = async (index: number, row: Product) => {
             handleCurrentChange(1);
           }
         })
-        .catch((err:string|any) => {
+        .catch((err: string | any) => {
           ElMessage.error(err);
         });
     })
@@ -201,7 +200,7 @@ const handleCurrentChange = (val: number) => {
   // 将当前页码数和每页展示的数据条数作为参数，将数据按照要求进行切割
   currentTableData.value = tableData.value.slice(
     (val - 1) * pageSize.value,
-    val * pageSize.value
+    val * pageSize.value,
   );
 };
 //接受子组件Product是否修改完毕
@@ -212,13 +211,12 @@ const customEventGetProduct = async (e: boolean) => {
     try {
       await initTableData();
       ElMessage.success("修改成功");
-    } catch (error:string|any) {
+    } catch (error: string | any) {
       ElMessage.error(error);
     }
   }
 };
 </script>
-
 
 <style lang="less" scoped>
 .product-table {

@@ -14,9 +14,8 @@ users.set("admin-token", {
 });
 
 users.set("editor-token", {
-  roles: ["editor"],
+  roles: ["editor", "user"],
   introduction: "我是普通编辑",
-  // avatar: "../public/dog.gif",
   avatar:
     "https://s1.aigei.com/src/img/gif/6a/6a49e68067f449838e0cd4c842d06b51.gif?e=2051020800&token=P7S2Xpzfz11vAkASLTkfHN7Fw-oOZBecqeJaxypL:JHEdLSp6Xg9UwKY4BFQrRKRIIA0=",
   name: "普通编辑",
@@ -75,6 +74,62 @@ const userMock: Array<{ url: string; method: string; response: any }> = [
           {
             code: 400,
             message: "获取用户信息失败",
+          },
+        ];
+      }
+    },
+  },
+  {
+    url: "/api/user/list",
+    method: "GET",
+    response: (config: any) => {
+      const userList = [...users.values()].map((item, index) => {
+        item.token = [...users.keys()][index];
+        return item;
+      });
+      
+      const token = config.headers?.Authorization;
+      if (users.has(token)) {
+        return [
+          200,
+          {
+            code: 200,
+            message: "获取用户信息成功",
+            data: userList,
+          },
+        ];
+      } else {
+        return [
+          400,
+          {
+            code: 400,
+            message: "获取用户信息失败",
+          },
+        ];
+      }
+    },
+  },
+  {
+    url: "/api/user/deleteUserByToken",
+    method: "DELETE",
+    response: (config: any) => {
+      const token = config.headers?.Authorization;
+      const deleteToken = config.params?.token;
+      users.delete(deleteToken);
+      if (users.has(token)) {
+        return [
+          200,
+          {
+            code: 200,
+            message: "删除成功",
+          },
+        ];
+      } else {
+        return [
+          400,
+          {
+            code: 400,
+            message: "删除失败",
           },
         ];
       }

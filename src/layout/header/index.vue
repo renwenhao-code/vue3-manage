@@ -42,7 +42,7 @@
 </template>
  
 <script setup lang="ts">
-import { ref, defineEmits, onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import { useUserStore } from "@/stores/user";
 import {asyncRoutes} from "@/router/routes";
 import router from "@/router/index";

@@ -6,7 +6,9 @@ export interface UserInfo {
   roles?: string[];
   introduction?: string;
   avatar?: string;
+  token?: string;
 }
+
 // 定义登录接口的响应类型
 export interface LoginResponse {
   code: number;
@@ -32,15 +34,10 @@ export interface Brand {
   annualSales: number;
 }
 
-
 // 定义品牌列表接口
 export interface BrandList {
   brands: Brand[];
 }
-
-
-
-
 
 //定义商品列表接口
 

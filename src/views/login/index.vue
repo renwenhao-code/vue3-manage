@@ -17,7 +17,18 @@
           label="密码:"
           label-position="top"
         >
-          <el-input size="large" v-model="loginInfo.password"></el-input>
+          <!-- <el-input size="large" type="password" v-model="loginInfo.password"></el-input> -->
+          <el-input
+            size="large"
+            :type="status ? 'text' : 'password'"
+            v-model="loginInfo.password"
+          >
+            <template #suffix>
+              <el-icon class="cursor-pointer" @click="status = !status"
+                ><component :is="status ? 'View' : 'Hide'"
+              /></el-icon>
+            </template>
+          </el-input>
         </el-form-item>
         <el-form-item class="user-related">
           <el-row>
@@ -41,7 +52,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "@/stores/user";
 import { ElMessage } from "element-plus";
@@ -53,6 +64,8 @@ const loginInfo: UserInfo = reactive({
   name: "admin",
   password: "123456",
 });
+
+const status = ref(false);
 
 const router = useRouter();
 
